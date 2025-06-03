@@ -28,17 +28,25 @@ def home(request):
 
 # función utilizada en el buscador.
 def search(request):
+ 
+  if request.method == 'POST': 
     name = request.POST.get('query', '').strip()
 
-    # si el usuario ingresó algo en el buscador, se deben filtrar las imágenes por dicho ingreso.
-    if name:
-        images = services.filterByCharacter(name)
-        favourite_list = services.getAllFavourites(request) if request.user.is_authenticated else []
-
-        return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
+    # Llamamos al servicio: si name es "", filterByCharacter devolverá todas las imágenes
+    images = services.filterByCharacter(name)
+    # Obtenemos favoritos solo si el usuario está logueado
+    if request.user.is_authenticated:
+            favourite_list = services.getAllFavourites(request)
     else:
-        return redirect('home')
+            favourite_list = []
 
+    return render(request, 'home.html', {
+            'images': images,
+            'favourite_list': favourite_list
+        })
+
+    # Si por algún motivo entraron con GET, redirigimos a home
+    return redirect('home')
 # función utilizada para filtrar por el tipo del Pokemon
 def filter_by_type(request):
     type = request.POST.get('type', '').strip()
