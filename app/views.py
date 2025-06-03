@@ -10,19 +10,30 @@ def index_page(request):
 
 # esta función obtiene 2 listados: uno de las imágenes de la API y otro de favoritos, ambos en formato Card, y los dibuja en el template 'home.html'.
 def home(request):
-    images = []
-    favourite_list = []
 
-    return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
+    #Para obtener todas las imágenes como lista de Card
+    images = services.getAllImages() #Se llama para conseguir todas las tarjetas de Pokémon
+    
+    #Para obtener Lista de Favoritos, si no hay usuario logueado, devuelve una lista vacia []
+    if request.user.is_authenticated:
+        favourite_list= services.getAllFavourites(request)
+    else:
+        favourite_list = []  
+
+    return render(request, 'home.html', {
+        'images': images, 
+        'favourite_list': favourite_list
+          })
+
 
 # función utilizada en el buscador.
 def search(request):
-    name = request.POST.get('query', '')
+    name = request.POST.get('query', '').strip()
 
     # si el usuario ingresó algo en el buscador, se deben filtrar las imágenes por dicho ingreso.
-    if (name != ''):
-        images = []
-        favourite_list = []
+    if name:
+        images = services.filterByCharacter(name)
+        favourite_list = services.getAllFavourites(request) if request.user.is_authenticated else []
 
         return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
     else:
@@ -30,11 +41,11 @@ def search(request):
 
 # función utilizada para filtrar por el tipo del Pokemon
 def filter_by_type(request):
-    type = request.POST.get('type', '')
+    type = request.POST.get('type', '').strip()
 
-    if type != '':
-        images = [] # debe traer un listado filtrado de imágenes, segun si es o contiene ese tipo.
-        favourite_list = []
+    if type:
+        images = services.filterByType(type) # debe traer un listado filtrado de imágenes, segun si es o contiene ese tipo.
+        favourite_list = services.getAllFavourites(request) if request.user.is_authenticated else []
 
         return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
     else:
@@ -43,15 +54,19 @@ def filter_by_type(request):
 # Estas funciones se usan cuando el usuario está logueado en la aplicación.
 @login_required
 def getAllFavouritesByUser(request):
-    pass
-
+   favourite_cards = services.getAllFavourites(request)
+   return render(request, 'favourites.html', {
+        'favourite_list': favourite_cards
+    })
 @login_required
 def saveFavourite(request):
-    pass
+    services.saveFavourite(request)
+    return redirect('home')
 
 @login_required
 def deleteFavourite(request):
-    pass
+    services.deleteFavourite(request)
+    return redirect('favoritos')
 
 @login_required
 def exit(request):
