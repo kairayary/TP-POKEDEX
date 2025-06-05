@@ -42,13 +42,16 @@
              {% for poketype in img.types %}
               {% if poketype == "fire" %}
                {% with border_class="border-danger" %}
-              {% elif poketype == "water" %}
+            {% endwith %}
+              {% if poketype == "water" %}
                {% with border_class="border-info" %}
-              {% elif poketype == "grass" %}
+            {% endwith %}
+               {% if poketype == "grass" %}
                {% with border_class="border-success" %}
               {% endif %}
              {% endfor %}
             {% endwith %}
+          
 
             <div class="card border-warning mb-3 ms-5" style="max-width: 540px; ">
                  <div class="row g-0">
