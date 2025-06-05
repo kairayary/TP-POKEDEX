@@ -45,7 +45,6 @@
 
                     <div class="col-md-8">
                         <div class="card-body">
-                            <div class="card border-primary mb-3" style="max-width: 600px;"></div>
                             <h3 class="card-title">{{ img.name }} #{{ img.id }} <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="Master Ball"></h3>
                             <p class="card-text">
                                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -68,8 +67,8 @@
                                 <input type="hidden" name="weight" value="{{ img.weight }}">
                                 <input type="hidden" name="types" value="{{ img.types }}">
                                 <input type="hidden" name="image" value="{{ img.image }}"> {% if img in favourite_list %}
-                                <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white" disabled>✔️ Favoritos</button> {% else %}
-                                <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white">❤️ Favoritos</button> {% endif %}
+                                <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white" disabled>✔ Favoritos</button> {% else %}
+                                <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white">❤ Favoritos</button> {% endif %}
                             </form>
                         </div>
                         {% endif %}
@@ -80,4 +79,4 @@
         {% endfor %} {% endif %}
     </div>
 </main>
-{% endblock %}
+{% endblock %}
