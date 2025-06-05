@@ -37,20 +37,6 @@
         {% else %} {% for img in images %}
         <div class="col">
             <!-- evaluar si la imagen pertenece al tipo fuego, agua o planta -->
-            <!-- modificar el borde de card segun si la imagen pertenece al tipo fuego, agua o planta, dejando por default color anaranjado -->
-            {% with border_class="" %} 
-             {% for poketype in img.types %}
-              {% if poketype == "fire" %}
-               {% with border_class="border-danger" %}
-            {% endwith %}
-              {% if poketype == "water" %}
-               {% with border_class="border-info" %}
-            {% endwith %}
-               {% if poketype == "grass" %}
-               {% with border_class="border-success" %}
-            {% endwith %}
-          
-
             <div class="card border-warning mb-3 ms-5" style="max-width: 540px; ">
                  <div class="row g-0">
                      <div class="col-md-4">
