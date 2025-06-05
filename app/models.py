@@ -22,4 +22,4 @@ class Favourite(models.Model):
     def __str__(self):
         return (f"{self.name} - Altura: {self.height if self.height else 'Desconocida'} "
                 f"(Peso: {self.weight if self.weight else 'Desconocido'}) - "
-                f"User: {self.user.username}")
+
