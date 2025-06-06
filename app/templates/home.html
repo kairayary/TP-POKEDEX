@@ -37,8 +37,7 @@
         {% else %} {% for img in images %}
         <div class="col">
             <!-- evaluar si la imagen pertenece al tipo fuego, agua o planta 
-             Cambiar el color del borde de la car segun su type-->
-
+             Cambiar el color del borde de la card segun su type-->
     <div class="card 
         {% if 'fire' in img.types %}
          border-danger
@@ -50,6 +49,13 @@
          border-warning
         {% endif %}
         mb-3 ms-5" style="max-width: 540px;">
+             {% if 'fire' in img.types %}
+             <img src="{% static 'img/fuego.jpg' %}" alt="Fuego" width="40">
+            {% elif 'water' in img.types %}
+             <img src="{% static 'img/agua.jpg' %}" alt="Agua" width="40">
+            {% elif 'grass' in img.types %}
+              <img src="{% static 'img/planta.jpg' %}" alt="Planta" width="40">
+            % endif %}
             <!-- Dar formato a cada card  -->
                  <div class="row g-0">
                      <div class="col-md-4">
