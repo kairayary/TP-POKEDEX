@@ -40,13 +40,13 @@
              Cambiar el color del borde de la card segun su type-->
     <div class="card 
         {% if 'fire' in img.types %}
-         border-danger
+       rounded border border-3 border-danger
         {% elif 'water' in img.types %}
-         border-primary
+        rounded border border-3 border-primary
         {% elif 'grass' in img.types %}
-         border-success
+       rounded border border-3 border-success
         {% else %}
-         border-warning
+        rounded border border-3 border-warning
         {% endif %}
         mb-3 ms-5" style="max-width: 540px;">
 
