@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from .layers.services import services
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 
 def index_page(request):
     return render(request, 'index.html')
@@ -47,6 +48,7 @@ def search(request):
 
     # Si por algún motivo entraron con GET, redirigimos a home
     return redirect('home')
+  
 # función utilizada para filtrar por el tipo del Pokemon
 def filter_by_type(request):
     type = request.POST.get('type', '').strip()
@@ -58,6 +60,25 @@ def filter_by_type(request):
         return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
     else:
         return redirect('home')
+
+# función para registrar nuevo usuario
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+
+        # Verificamos si el usuario ya existe
+        if User.objects.filter(username=username).exists():
+            return render(request, 'register.html', {'error': 'Ese nombre de usuario ya está registrado.'})
+        
+        # Creamos el nuevo usuario
+        user = User.objects.create_user(username=username, email=email, password=password)
+        user.save()
+
+        return redirect('login')
+
+    return render(request, 'register.html')
 
 # Estas funciones se usan cuando el usuario está logueado en la aplicación.
 @login_required
