@@ -1,48 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POKEDEX - IP</title>
-    {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %} {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pokedex | IP</title>
+  {% load bootstrap5 %} 
+  {% bootstrap_css %} 
+  {% bootstrap_javascript %} 
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <style>
+    .pokemon-navbar {
+      background: linear-gradient(to right, #ff0000, #ffffff);
+      border-bottom: 4px solid black;
+    }
 
+    .pokemon-navbar .navbar-brand img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .pokemon-navbar .nav-link {
+      font-weight: bold;
+      color: black !important;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .pokemon-navbar .nav-link:hover {
+      color: #ffcc00 !important;
+    }
+
+    .pokemon-title {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 16px;
+      color: #000;
+    }
+
+    body {
+      background-color: #f8f9fa;
+    }
+  </style>
+</head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Proyecto TP</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+  <nav class="navbar navbar-expand-lg pokemon-navbar shadow">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'index-page' %}">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pokémon_logo.svg" alt="Pokemon Logo" />
+        <span class="pokemon-title"></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'index-page' %}">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}"><strong>Galería</strong></a>
-                    </li>
-                    {% if request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'favoritos' %}">Favoritos</a>
-                    </li>
-                    {% endif %}
-                    <li class="nav-item">
-                        {% if request.user.is_authenticated %}
-                        <a class="nav-link" href="{% url 'exit' %}">Salir</a> {% else %}
-                        <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a> {% endif %}
-                    </li>
-                    {% if not request.user.is_authenticated %}
-                    <li class="nav-item">
-                    <a class="nav-link" href="{% url 'register' %}">Registrarse</a>
-                     </li>
-                    {% endif %}
 
-                </ul>
-            </div>
-        </div>
-    </nav>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Galería</a>
+          </li>
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'favoritos' %}">Favoritos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exit' %}">Salir</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Registrarse</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-    {% block content %} {% endblock %} {% include "footer.html" %}
+  {% block content %}{% endblock %}
+  {% include "footer.html" %}
+</body>
+</html>

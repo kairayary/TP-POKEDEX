@@ -1,9 +1,15 @@
-{% extends 'header.html' %} {% block content %} {% if request.user.is_authenticated %}
-<h2 class="text-center">Bienvenido {{ user.username | upper }}!</h2>
-{% else %}
-<h2 class="text-center">Bienvenido!</h2>
-{% endif %}
-<p class="text-center">
-    Mirá las imágenes desde <a href="{% url 'home' %}">este link.</a>
-</p>
+{% extends 'header.html' %}
+{% block content %}
+<div class="welcome-container">
+    <div class="welcome-box text-center">
+        {% if request.user.is_authenticated %}
+        <h2 class="welcome-title">¡Bienvenido {{ user.username|upper }}!</h2>
+        {% else %}
+        <h2 class="welcome-title">¡Bienvenido a la Pokédex!</h2>
+        {% endif %}
+
+        <p class="welcome-subtext">Explora el mundo Pokémon</p>
+        <a href="{% url 'home' %}" class="btn btn-pokemon">Ir a la Galería</a>
+    </div>
+</div>
 {% endblock %}
