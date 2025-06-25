@@ -1,26 +1,31 @@
 
 {% extends 'header.html' %}
+{% load static %}
 {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center">Registro</h2>
-    {% if error %}
-        <div class="alert alert-danger">{{ error }}</div>
-    {% endif %}
-    <form method="post">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label>Nombre de usuario:</label>
-            <input type="text" name="username" class="form-control" required>
+<main class="register-container">
+    <div class="register-card">
+        <!-- Imagen -->
+        <div class="register-img">
+            <img src="{% static 'pokemon1.jpg' %}" alt="Pokebola">
         </div>
-        <div class="mb-3">
-            <label>Correo electrónico:</label>
-            <input type="email" name="email" class="form-control" required>
+
+        <!-- Formulario -->
+        <div class="register-form">
+            <h2 class="register-title">¡Unete a la Pokédex!</h2>
+            {% if error %}
+                <div class="alert alert-danger text-center">{{ error }}</div>
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <label>Nombre de usuario:</label>
+                <input type="text" name="username" required>
+                <label>Correo electrónico:</label>
+                <input type="email" name="email" required>
+                <label>Contraseña:</label>
+                <input type="password" name="password" required>
+                <button type="submit">Registrarse</button>
+            </form>
         </div>
-        <div class="mb-3">
-            <label>Contraseña:</label>
-            <input type="password" name="password" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Registrarse</button>
-    </form>
-</div>
+    </div>
+</main>
 {% endblock %}

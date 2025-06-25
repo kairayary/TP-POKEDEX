@@ -64,21 +64,24 @@ def filter_by_type(request):
 # función para registrar nuevo usuario
 def register(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
 
-        # Verificamos si el usuario ya existe
+        # Validación básica
+        if not username or not email or not password:
+            return render(request, 'register.html', {'error': 'Todos los campos son obligatorios.'})
+
         if User.objects.filter(username=username).exists():
             return render(request, 'register.html', {'error': 'Ese nombre de usuario ya está registrado.'})
-        
-        # Creamos el nuevo usuario
+
         user = User.objects.create_user(username=username, email=email, password=password)
         user.save()
 
         return redirect('login')
 
     return render(request, 'register.html')
+
 
 # Estas funciones se usan cuando el usuario está logueado en la aplicación.
 @login_required
