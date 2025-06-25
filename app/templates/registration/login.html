@@ -1,17 +1,35 @@
-{% extends 'header.html' %} {% block content %}
-<div class="login-form" style="text-align: center;">
-    <form action="" method="POST" style="display: inline-block;">
-        {% csrf_token %}
-        <h2 class="text-center">Inicio de sesión</h2>
-        <div class="form-group" style="margin-bottom: 5%;">
-            <input type="text" name="username" id="username" class="form-control" placeholder="Usuario" required="required">
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="login-card d-flex rounded-4 shadow-lg overflow-hidden">
+
+        <!-- Imagen a la izquierda -->
+        <div class="login-img">
+            <img src="{% static 'pokemon2.webp' %}" alt="Login Pokémon" class="img-fluid h-100 w-100 object-fit-cover">
         </div>
-        <div class="form-group" style="margin-bottom: 5%;">
-            <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña" required="required">
+
+        <!-- Formulario a la derecha -->
+        <div class="login-form p-5 d-flex flex-column justify-content-center">
+            <h2 class="text-center mb-4 login-title">¡Inicia tu aventura!</h2>
+
+            {% if error %}
+                <div class="alert alert-danger text-center">{{ error }}</div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Nombre de usuario:</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Contraseña:</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-pokemon w-100">Iniciar sesión</button>
+            </form>
         </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
-        </div>
-    </form>
+    </div>
 </div>
 {% endblock %}

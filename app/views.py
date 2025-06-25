@@ -47,7 +47,7 @@ def search(request):
         })
 
     # Si por algún motivo entraron con GET, redirigimos a home
-    return redirect('home')
+  return redirect('home')
   
 # función utilizada para filtrar por el tipo del Pokemon
 def filter_by_type(request):
