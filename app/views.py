@@ -5,6 +5,8 @@ from .layers.services import services
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.conf import settings
 
 def index_page(request):
     return render(request, 'index.html')
@@ -64,19 +66,39 @@ def filter_by_type(request):
 # función para registrar nuevo usuario
 def register(request):
     if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        # Validación básica
-        if not username or not email or not password:
+        # Validación
+        if not all([first_name, last_name, username, email, password]):
             return render(request, 'register.html', {'error': 'Todos los campos son obligatorios.'})
 
         if User.objects.filter(username=username).exists():
-            return render(request, 'register.html', {'error': 'Ese nombre de usuario ya está registrado.'})
+            return render(request, 'register.html', {'error': 'Ese nombre de usuario ya existe.'})
 
-        user = User.objects.create_user(username=username, email=email, password=password)
+        # Crear usuario
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name
+        )
         user.save()
+
+        # Enviar mail con credenciales
+        subject = 'Registro exitoso en la App Pokémon'
+        message = f"Hola {first_name},\n\nTu cuenta fue creada exitosamente.\n\nUsuario: {username}\nContraseña: {password}\n\n¡Bienvenido!"
+        from_email = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [email]
+
+        try:
+            send_mail(subject, message, from_email, recipient_list)
+        except Exception as e:
+            print(f"Error al enviar el correo: {e}")
 
         return redirect('login')
 
