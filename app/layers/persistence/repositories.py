@@ -23,6 +23,12 @@ def save_favourite(fav):
         print(f"Error de datos al guardar el favorito: Falta el campo {e}")
         return None
 
+def find_favourite_by_name_and_user(name, user):
+    favourites = get_all_favourites(user)
+    for fav in favourites:
+        if fav['name'].lower() == name.lower():
+            return fav
+    return None
 
 def get_all_favourites(user):
     return list(Favourite.objects.filter(user=user).values(

@@ -7,27 +7,30 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib import messages
 
 def index_page(request):
     return render(request, 'index.html')
 
 # esta función obtiene 2 listados: uno de las imágenes de la API y otro de favoritos, ambos en formato Card, y los dibuja en el template 'home.html'.
 def home(request):
-
     #Para obtener todas las imágenes como lista de Card
-    images = services.getAllImages() #Se llama para conseguir todas las tarjetas de Pokémon
-    
-    #Para obtener Lista de Favoritos, si no hay usuario logueado, devuelve una lista vacia []
+    images = services.getAllImages()#Se llama para conseguir todas las tarjetas de Pokémon
+
+     #Para obtener Lista de Favoritos, si no hay usuario logueado, devuelve una lista vacia []
     if request.user.is_authenticated:
-        favourite_list= services.getAllFavourites(request)
+        favourite_list = services.getAllFavourites(request)
+        #Se extare solos los nombres favoritos para facilitar comparación en el template
+        favourite_names = [fav.name for fav in favourite_list]
     else:
-        favourite_list = []  
+        favourite_list = []
+        favourite_names = []
 
     return render(request, 'home.html', {
-        'images': images, 
-        'favourite_list': favourite_list
-          })
-
+        'images': images,
+        'favourite_list': favourite_list,
+        'favourite_names': favourite_names  # variables enviadas al template
+    })
 
 # función utilizada en el buscador.
 def search(request):
@@ -61,7 +64,15 @@ def filter_by_type(request):
 
         return render(request, 'home.html', { 'images': images, 'favourite_list': favourite_list })
     else:
-        return redirect('home')
+        return redirect('home')   
+ #agregar favorito
+def agregar_favorito(request):
+    try:
+        services.saveFavourite(request)
+       #messages.success(request, "¡Pokémon agregado a favoritos!")
+    except Exception as e:
+        messages.warning(request, str(e))  # muestra el mensaje real del error
+    return redirect('home/')
 
 # función para registrar nuevo usuario
 def register(request):
@@ -114,7 +125,13 @@ def getAllFavouritesByUser(request):
     })
 @login_required
 def saveFavourite(request):
-    services.saveFavourite(request)
+    result = services.saveFavourite(request)
+
+    if result is None:
+        messages.warning(request, 'Ese Pokémon ya está en tus favoritos.')
+    else:
+        messages.success(request, '¡Pokémon agregado a favoritos!')
+
     return redirect('home')
 
 @login_required
